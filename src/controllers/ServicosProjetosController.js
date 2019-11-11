@@ -31,13 +31,18 @@ module.exports = {
     },
   
     async update(req, res){
-        const {titulo} = req.query;
-        console.log(titulo);
+        const {_id} = req.query;
         const {tituloEditado} = req.body;
         const {descricaoEditada} = req.body;
 
-        const edita = await ServicosProjetos.updateOne({titulo},{titulo: tituloEditado,descricao: descricaoEditada},{});
+        const edita = await ServicosProjetos.update({_id},{titulo: tituloEditado,descricao: descricaoEditada});
 
         return res.json(edita);
+    },
+
+    async destroy(req, res){
+        const {_id} = req.query;
+        await ServicosProjetos.deleteOne({_id});
+        res.json({message: "destruido"});
     }
 }
