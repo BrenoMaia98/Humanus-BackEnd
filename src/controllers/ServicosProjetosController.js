@@ -9,7 +9,7 @@ module.exports = {
     async store(req, res){
         const {titulo} = req.body;
         const {descricao} = req.body;
-        
+       
         let temp = await ServicosProjetos.findOne({titulo});
         
         if(temp){
@@ -31,17 +31,19 @@ module.exports = {
     },
   
     async update(req, res){
-        const {_id} = req.query;
-        const {tituloEditado} = req.body;
-        const {descricaoEditada} = req.body;
-
-        const edita = await ServicosProjetos.update({_id},{titulo: tituloEditado,descricao: descricaoEditada});
-
+        const {titulo} = req.body;
+        const {descricao} = req.body;
+        const {_id} = req.body;
+        const edita = await ServicosProjetos.updateOne(
+            {_id},
+            {$set:{titulo,descricao}}, 
+            {upsert:false}
+            );
         return res.json(edita);
     },
 
     async destroy(req, res){
-        const {_id} = req.query;
+        const {_id} = req.body;
         await ServicosProjetos.deleteOne({_id});
         res.json({message: "destruido"});
     }
