@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const PostagemSchema = mongoose.Schema({
     num: Number,
+    numC: Number,
     categoria: String,
     titulo: String,
     data: Date,

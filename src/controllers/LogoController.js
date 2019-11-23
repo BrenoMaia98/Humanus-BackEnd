@@ -1,4 +1,6 @@
 const Logo = require("../models/LogoSchema");
+const fs = require("fs");
+const path = require('path');
 
 module.exports={
     async store(req,res){
@@ -9,7 +11,16 @@ module.exports={
 
     async update(req, res){
         const {filename} = req.file;
-        await Logo.update({thumbnail:filename});
+        const atual = await Logo.findOne({});
+        if(atual.thumbnail != filename){
+            const pasta = path.resolve(__dirname, '..', '..', 'uploads',`${atual.thumbnail}`);
+            await fs.unlink(pasta, function(error) {
+                if (error) {
+                    throw error;
+                }
+            });
+        }
+        await Logo.updateOne({thumbnail:filename});
         res.json({message:"Imagem atualizada"});
     },
 
