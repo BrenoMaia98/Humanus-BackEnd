@@ -28,7 +28,10 @@ module.exports={
         logo = await Logo.find({});
         res.json(logo);
     },
-
+    async destroy(req, res){
+        await Logo.deleteMany({});
+        res.json({message: "deletado"});
+    }
 
 }
 

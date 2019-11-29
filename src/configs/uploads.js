@@ -7,8 +7,9 @@ module.exports = {
         filename: (req, file, cb) =>{
             const ext = path.extname(file.originalname);
             const name = path.basename(file.originalname, ext);
-
-            cb(null, `${name}${ext}`);
+            const data = new Date();
+            const strData = data.toString();
+            cb(null, `${name}${strData}${ext}`);
         }
     })
 };

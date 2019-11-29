@@ -2,7 +2,7 @@ const WhatsApp = require("../models/WhatsAppSchema");
 
 module.exports={
     
-    /*async store(req, res){
+    async store(req, res){
         const {numero} = req.body;
         
         let zap = await WhatsApp.findOne({numero});
@@ -14,7 +14,7 @@ module.exports={
             zap = await WhatsApp.create({numero});
             res.json(zap);
         }
-    },*/
+    },
 
     async show(req, res){
         const zap = await WhatsApp.find({});
