@@ -57,6 +57,6 @@ module.exports = {
     async destroy(req, res){
         const {_id} = req.body;
         await ServicosProjetos.deleteOne({_id});
-        res.json({message: "destruido"});
+        res.json({message: "Item removido"});
     }
 }
