@@ -18,18 +18,23 @@ module.exports = {
         },
         
         async show(req, res){
-            const {usuario, senha} = req.body;
-            const verificaUsuario = await Session.findOne({usuario});
-            jwt.verify(verificaUsuario.token, senha, function(err, decoded) {
-                if(err){
-                    return res.json({message:"Usuario ou senha invalido"});
+            try{
+                const {usuario, senha} = req.body;
+                const verificaUsuario = await Session.findOne({usuario});
+                
+                if(!verificaUsuario){
+                    return res.json({isError:true,message:"Usuario ou senha invalido"});
                 }
-            });
-            if(!verificaUsuario){
-                return res.json({message:"Usuario ou senha invalido"});
-            }
-            else{ 
-                return res.json({token:verificaUsuario.token});
+                else{ 
+                    await jwt.verify(verificaUsuario.token, senha, function(err, decoded) {
+                        if(err){
+                            return res.json({isError:true,message:"Usuario ou senha invalido"});
+                        }
+                    });
+                    return res.json({isError:false,token:verificaUsuario.token});
+                }
+            }catch(e){
+                console.log("Catch Error: ",e);
             }
         },
 
