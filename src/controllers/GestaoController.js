@@ -5,7 +5,7 @@ const path = require('path');
 module.exports={
     async store(req,res){
         const {filename} = req.file;
-        const image = await Gestao.create({thumbnail:filename});
+        await Gestao.create({thumbnail:filename});
         res.json({message: "Imagem Salva"});
     },
 
@@ -30,7 +30,12 @@ module.exports={
     },
 
     async destroy(req, res){
+        try{
         await Gestao.deleteMany({});
         res.json({message: "deletado"});
+        }
+        catch(e){
+            console.log(e);
+        }
     }
 }

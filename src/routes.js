@@ -38,7 +38,7 @@ routes.delete('/Logo/delete', Logo.destroy);
 routes.post('/Gestao/register', upload.single('thumbnail'), Gestao.store);
 routes.post('/Gestao/update', upload.single('thumbnail'), Gestao.update);
 routes.post('/Gestao/index', Gestao.index);
-routes.delete('Gestao/delete', Gestao.destroy);
+routes.delete('/Gestao/delete', Gestao.destroy);
 
 //Postagem
 routes.post('/Postagem/create', upload.single('thumbnail'), Postagem.store);
