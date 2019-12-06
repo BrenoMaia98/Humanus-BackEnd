@@ -48,20 +48,29 @@ module.exports = {
     },
 
     async index(req, res){
-        const {pg, categoria} = req.body;
-        cat = await Postagem.findOne({categoria});
-        if(!cat){
-            const X = await Postagem.findOne({}).sort({num: -1});
-            const MAX= X.num + (10-10*pg);
-            const MIN=MAX-9;
-            const posts = await Postagem.find({num:{$gte:MIN}}).limit(10);
-            res.json(posts);
+        const {pg, categoria} = req.body; 
+        if(categoria != ""){
+            cat = await Postagem.findOne({categoria});
+            if(!cat){
+                res.json({
+                    isError:    true,
+                    message:"Categoria não existente"
+                });
+            }
+            else{
+                const X = await Postagem.findOne({categoria}).sort({numC: -1});
+                const MAX= X.numC + (2-2*pg);
+                const MIN=MAX-1;
+                const posts = await Postagem.find({categoria,numC:{$gte:MIN}}).limit(2);
+                res.json(posts);
+            }
         }
         else{
-            const X = await Postagem.findOne({categoria}).sort({numC: -1});
-            const MAX= X.numC + (10-10*pg);
-            const MIN=MAX-9;
-            const posts = await Postagem.find({categoria,numC:{$gte:MIN}}).limit(10);
+            const X = await Postagem.findOne({}).sort({num: -1});
+            const MAX= X.num + (2-2*pg);
+            const MIN=MAX-1;
+            console.log(MIN);
+            const posts = await Postagem.find({num:{$gte:MIN}}).limit(2);
             res.json(posts);
         }
     },

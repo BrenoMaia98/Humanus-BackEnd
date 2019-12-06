@@ -26,7 +26,7 @@ module.exports={
 
     async index(req, res){
         logo = await Logo.find({});
-        res.json(logo);
+        res.json({url:req.file, logo});
     },
     async destroy(req, res){
         await Logo.deleteMany({});

@@ -14,7 +14,8 @@ module.exports = {
             if(temp){
                 return res.json({
                     isError: true,
-                    message:"Titulo ou Descrição já existentes"}
+                    message:"Titulo ou Descrição já existentes",
+                    data:temp}
                     );
             }
             else{
