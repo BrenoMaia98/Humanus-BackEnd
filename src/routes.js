@@ -37,14 +37,14 @@ routes.get('/Logo/index/:tipo', upload.single('thumbnail'),Logo.index);
 
 //FotoGestão
 routes.post('/Gestao/register', upload.single('thumbnail'), Gestao.store);
-routes.post('/Gestao/update', upload.single('thumbnail'), Gestao.update);
+routes.put('/Gestao/update', upload.single('thumbnail'), Gestao.update);
 routes.post('/Gestao/index', Gestao.index);
 //routes.delete('/Gestao/delete', Gestao.destroy);
 
 //Postagem
-routes.post('/Postagem/create', upload.single('thumbnail'), Postagem.store);
-routes.post('/Postagem/list', Postagem.index);
-routes.post('/Postagem/update', upload.single('thumbnail'), Postagem.update);
+routes.post('/Postagem/create', upload.array('thumbnail'), Postagem.store);
+routes.get('/Postagem/list/:pag/:categoria', Postagem.index);
+routes.post('/Postagem/update', upload.any('thumbnail'), Postagem.update);
 routes.delete('/Postagem/delete', Postagem.destroy);
 
 //Contato
