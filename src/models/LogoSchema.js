@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 const LogoSchema = new mongoose.Schema({
-    thumbnail: String
+    tipo: String,
+    thumbnail: String,
 });
 
 module.exports = mongoose.model("LogoSchema", LogoSchema);

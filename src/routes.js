@@ -21,7 +21,7 @@ routes.post('/Session/login', Session.show);
 //ServicosProjetos
 routes.post('/ServicosProjetos/create', ServicosProjetos.store);
 routes.get('/ServicosProjetos/list', ServicosProjetos.index);
-routes.post('/ServicosProjetos/update', ServicosProjetos.update);
+routes.put('/ServicosProjetos/update', ServicosProjetos.update);
 routes.post('/ServicosProjetos/delete', ServicosProjetos.destroy);
 
 //WhatsApp
@@ -31,15 +31,15 @@ routes.post('/WhatsApp/update', WhatsApp.update);
 
 //Logo
 routes.post('/Logo/register', upload.single('thumbnail'), Logo.store);
-routes.post('/Logo/update', upload.single('thumbnail'), Logo.update);
-routes.post('/Logo/index', upload.single('thumbnail'),Logo.index);
-routes.delete('/Logo/delete',upload.single('thumbnail'), Logo.destroy);
+routes.put('/Logo/update', upload.single('thumbnail'), Logo.update);
+routes.get('/Logo/index/:tipo', upload.single('thumbnail'),Logo.index);
+//routes.delete('/Logo/delete',upload.single('thumbnail'), Logo.destroy);
 
 //FotoGestão
 routes.post('/Gestao/register', upload.single('thumbnail'), Gestao.store);
 routes.post('/Gestao/update', upload.single('thumbnail'), Gestao.update);
 routes.post('/Gestao/index', Gestao.index);
-routes.delete('/Gestao/delete', Gestao.destroy);
+//routes.delete('/Gestao/delete', Gestao.destroy);
 
 //Postagem
 routes.post('/Postagem/create', upload.single('thumbnail'), Postagem.store);
@@ -51,7 +51,7 @@ routes.delete('/Postagem/delete', Postagem.destroy);
 routes.post('/Email/send', Contato.send);
 
 //Imagem
-routes.get('/Images/:filename', Imagens.getImage);
+routes.get('/Image/:filename', Imagens.getImage);
 
 
 module.exports = routes;
