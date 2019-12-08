@@ -75,7 +75,6 @@ module.exports = {
 
             const postagem = await Postagem.findOne({ _id });
             postagem.thumbnail.forEach(async img => {
-                console.log(img);
                 const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
                 await fs.unlink(pasta, function (error) {
                     if (error) {
@@ -98,10 +97,24 @@ module.exports = {
         }
     },
 
-    async destroy(req, res) {
-        const { _id } = req.body;
-        await Postagem.deleteMany({ _id });
-        res.json({ message: "Postagem deletada" });
+    async delete(req, res) {
+        const { _id } = req.params;
+        const postagem = await Postagem.findOne({ _id });
+        if (postagem) {
+
+            postagem.thumbnail.forEach(async img => {
+                const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
+                await fs.unlink(pasta, function (error) {
+                    if (error) {
+                        throw error;
+                    }
+                });
+            })
+            await Postagem.findOneAndDelete({ _id });
+            res.json({ isError: false, message: "Postagem deletada com sucesso" });
+        } else {
+            res.json({ isError: true, message: "Não existe tal postagem para ser deletada!" });
+        }
     },
 
     async listAll(req, res) {
