@@ -14,8 +14,12 @@ module.exports = {
             if(temp){
                 return res.json({
                     isError: true,
+<<<<<<< HEAD
                     message:"Titulo ou Descrição já existentes",
                     data:temp}
+=======
+                    message:"Titulo ou Descrição já existentes"}
+>>>>>>> 6fcc7e153c35cc9c258ae98ebcca6f9496d4b297
                     );
             }
             else{
@@ -56,6 +60,7 @@ module.exports = {
     },
 
     async destroy(req, res){
+<<<<<<< HEAD
         try{
             const {_id} = req.body;
             await ServicosProjetos.deleteOne({_id});
@@ -63,5 +68,10 @@ module.exports = {
         }catch(e){
             console.log(e)
         }
+=======
+        const {_id} = req.body;
+        await ServicosProjetos.deleteOne({_id});
+        res.json({message: "Item removido"});
+>>>>>>> 6fcc7e153c35cc9c258ae98ebcca6f9496d4b297
     }
 }
