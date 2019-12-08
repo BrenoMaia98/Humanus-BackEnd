@@ -1,4 +1,6 @@
 const Postagem = require('../models/PostagemSchema');
+const fs = require("fs");
+const path = require('path');
 
 module.exports = {
     async store(req, res) {
@@ -69,16 +71,30 @@ module.exports = {
         req.files.forEach(file => {
             filenames.push(file.filename)
         });
-        const postagem = await Postagem.findOne({ _id });
-        if (postagem) {
-            const update = await Postagem.updateOne(
-                { _id },
-                { $set: { categoria, titulo, data, resumo, materiaCompleta, thumbnail: filename } },
-                { upsert: false }
-            )
-            res.json({ isError: false, update });
-        } else {
-            res.json({ isError: true, message: "Não foi encontrado o registro" });
+        try {
+
+            const postagem = await Postagem.findOne({ _id });
+            postagem.thumbnail.forEach(async img => {
+                console.log(img);
+                const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
+                await fs.unlink(pasta, function (error) {
+                    if (error) {
+                        throw error;
+                    }
+                });
+            })
+            if (postagem) {
+                const update = await Postagem.updateOne(
+                    { _id },
+                    { $set: { categoria, titulo, data, resumo, materiaCompleta, thumbnail: filenames } },
+                    { upsert: false }
+                )
+                res.json({ isError: false, update });
+            } else {
+                res.json({ isError: true, message: "Não foi encontrado o registro" });
+            }
+        } catch (e) {
+            console.log(e)
         }
     },
 
@@ -87,10 +103,10 @@ module.exports = {
         await Postagem.deleteMany({ _id });
         res.json({ message: "Postagem deletada" });
     },
-    
+
     async listAll(req, res) {
         const postagem = await Postagem.find({});
         res.json(postagem);
     }
-    
+
 }

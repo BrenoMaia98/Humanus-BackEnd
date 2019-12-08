@@ -13,9 +13,7 @@ module.exports = {
         const { filename } = req.file;
         const { tipo } = req.body
         const atual = await Logo.findOne({ tipo });
-        console.log(atual);
         if(atual){
-            console.log("If, Update ");
             const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${atual.thumbnail}`);
             await fs.unlink(pasta, function (error) {
                 if (error) {
