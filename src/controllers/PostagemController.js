@@ -69,10 +69,6 @@ module.exports = {
             const X = await Postagem.findOne({}).sort({num: -1});
             const MAX= X.num + (2-2*pg);
             const MIN=MAX-1;
-<<<<<<< HEAD
-=======
-            console.log(MIN);
->>>>>>> 6fcc7e153c35cc9c258ae98ebcca6f9496d4b297
             const posts = await Postagem.find({num:{$gte:MIN}}).limit(2);
             res.json(posts);
         }

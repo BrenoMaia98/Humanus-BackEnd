@@ -39,11 +39,7 @@ routes.get('/Logo/index/:tipo', upload.single('thumbnail'),Logo.index);
 routes.post('/Gestao/register', upload.single('thumbnail'), Gestao.store);
 routes.post('/Gestao/update', upload.single('thumbnail'), Gestao.update);
 routes.post('/Gestao/index', Gestao.index);
-<<<<<<< HEAD
 //routes.delete('/Gestao/delete', Gestao.destroy);
-=======
-routes.delete('/Gestao/delete', Gestao.destroy);
->>>>>>> 6fcc7e153c35cc9c258ae98ebcca6f9496d4b297
 
 //Postagem
 routes.post('/Postagem/create', upload.single('thumbnail'), Postagem.store);
