@@ -44,7 +44,8 @@ routes.post('/Gestao/index', Gestao.index);
 //Postagem
 routes.post('/Postagem/create', upload.array('thumbnail'), Postagem.store);
 routes.get('/Postagem/list/:pag/:categoria', Postagem.index);
-routes.post('/Postagem/update', upload.any('thumbnail'), Postagem.update);
+routes.put('/Postagem/update', upload.array('thumbnail'), Postagem.update);
+routes.get('/Postagem/all', Postagem.listAll);
 routes.delete('/Postagem/delete', Postagem.destroy);
 
 //Contato

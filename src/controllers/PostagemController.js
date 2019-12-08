@@ -58,31 +58,27 @@ module.exports = {
             res.json(arrayPosts);
         }
         else {
-            const TodasPostagens = await Postagem.find({}).skip((pag-1)*3).limit(3).sort([["num",-1]]);
+            const TodasPostagens = await Postagem.find({}).skip((pag - 1) * 3).limit(3).sort([["num", -1]]);
             res.json(TodasPostagens);
         }
     },
 
     async update(req, res) {
         const { categoria, titulo, data, resumo, materiaCompleta, _id } = req.body;
-        const { filename } = req.file;
-        cat = await Postagem.findOne({ categoria });
-        if (cat == categoria) {
-            const edita = await ServicosProjetos.updateOne(
+        var filenames = [];
+        req.files.forEach(file => {
+            filenames.push(file.filename)
+        });
+        const postagem = await Postagem.findOne({ _id });
+        if (postagem) {
+            const update = await Postagem.updateOne(
                 { _id },
                 { $set: { categoria, titulo, data, resumo, materiaCompleta, thumbnail: filename } },
                 { upsert: false }
-            );
-            res.json(edita);
-        }
-        else {
-            const Y = await Postagem.findOne({ categoria }).sort({ numC: -1 });
-            const edita = await ServicosProjetos.updateOne(
-                { _id },
-                { $set: { categoria, numC: Y.numC + 1, titulo, data, resumo, materiaCompleta, thumbnail: filename } },
-                { upsert: false }
-            );
-            res.json(edita);
+            )
+            res.json({ isError: false, update });
+        } else {
+            res.json({ isError: true, message: "Não foi encontrado o registro" });
         }
     },
 
@@ -90,5 +86,11 @@ module.exports = {
         const { _id } = req.body;
         await Postagem.deleteMany({ _id });
         res.json({ message: "Postagem deletada" });
+    },
+    
+    async listAll(req, res) {
+        const postagem = await Postagem.find({});
+        res.json(postagem);
     }
+    
 }
