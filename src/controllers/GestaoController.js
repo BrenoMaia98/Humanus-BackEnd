@@ -33,7 +33,7 @@ module.exports = {
                         throw error;
                     }
                 });
-                const nova = await Gestao.update(
+                const nova = await Gestao.updateOne(
                     {thumbnail: atual.thumbnail},
                     { $set: { thumbnail: filename, tipo } },
                     { upsert: false }
@@ -55,9 +55,8 @@ module.exports = {
 
     async index(req, res) {
         const fotoGestao = await Gestao.findOne({ tipo: "fotoGestao" });
-        console.log(fotoGestao)
         if (!fotoGestao) {
-            res.json({ isError: true, message: `A imagem da FotoGestão não existe! Insira antes.`, file: filename });
+            res.json({ isError: true, message: `A imagem da FotoGestão não existe! Insira antes.` });
         } else {
             res.json({ isError: false, url: req.file, fotoGestao });
         }
