@@ -119,7 +119,7 @@ module.exports = {
 
     async listAll(req, res) {
         const postagem = await Postagem.find({});
-        res.json(postagem);
+        res.json(postagem.reverse());
     }
 
 }
