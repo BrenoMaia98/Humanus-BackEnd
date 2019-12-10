@@ -17,13 +17,22 @@ module.exports={
     },
 
     async show(req, res){
-        const zap = await WhatsApp.find({});
+        const zap = await WhatsApp.findOne({});
         res.json(zap);
     },
 
     async update(req, res){
-        const {numero} = req.body;
-        const zap = await WhatsApp.update({},{numero});
-        res.json({message: "editado"});
+        try{
+            const {numero,_id} = req.body;
+            await WhatsApp.updateOne(
+                {_id},
+                {$set:{numero}}, 
+                {upsert:false}
+                );
+            res.json({isError:false,message: "editado"});
+        }catch(e){
+            res.json({isError:true,message: e});
+
+        }
     }
 }

@@ -7,19 +7,32 @@ Destroy
 */
 module.exports = {
     async store(req, res){
-        const {titulo} = req.body;
-        const {descricao} = req.body;
-       
-        let temp = await ServicosProjetos.findOne({titulo});
-        
-        if(temp){
-            return res.json({message:"Titulo ou Descrição já existentes"});
+        try{
+            const {titulo} = req.body;
+            const {descricao} = req.body;
+            let temp = await ServicosProjetos.findOne({titulo});
+            if(temp){
+                return res.json({
+                    isError: true,
+                    message:"Titulo ou Descrição já existentes",
+                    data:temp}
+                    );
+            }
+            else{
+                
+                temp = await ServicosProjetos.create({
+                    isError:false,
+                    titulo:titulo, 
+                    descricao:descricao 
+                });
+                return res.json(temp);
+            }
         }
-        else{
-            
-            temp = await ServicosProjetos.create({
-                titulo:titulo, 
-                descricao:descricao 
+        catch(e){
+            console.log(e);
+            return  temp = await ServicosProjetos.create({
+                isError: true,
+                message: "Ocorreu um erro inesperado, tente novamente mais tarde"
             });
             return res.json(temp);
         }
@@ -43,8 +56,12 @@ module.exports = {
     },
 
     async destroy(req, res){
-        const {_id} = req.body;
-        await ServicosProjetos.deleteOne({_id});
-        res.json({message: "destruido"});
+        try{
+            const {_id} = req.body;
+            await ServicosProjetos.deleteOne({_id});
+            res.json({message: "destruido"});
+        }catch(e){
+            console.log(e)
+        }
     }
 }

@@ -1,6 +1,7 @@
 const Session = require('../models/SessionSchema');
 const jwt = require('jsonwebtoken');
 module.exports = {
+        
         async store(req, res){
             const {usuario, senha} = req.body;
             let token = jwt.sign({ foo: 'bar' }, senha)

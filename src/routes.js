@@ -9,6 +9,7 @@ const Logo = require('./controllers/LogoController');
 const Gestao = require('./controllers/GestaoController');
 const Postagem = require('./controllers/PostagemController');
 const Contato = require('./controllers/ContatoController');
+const Imagens = require('./controllers/Imagens');
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -19,9 +20,9 @@ routes.post('/Session/login', Session.show);
 
 //ServicosProjetos
 routes.post('/ServicosProjetos/create', ServicosProjetos.store);
-routes.post('/ServicosProjetos/list', ServicosProjetos.index);
-routes.post('/ServicosProjetos/update', ServicosProjetos.update);
-routes.delete('/ServicosProjetos/delete', ServicosProjetos.destroy);
+routes.get('/ServicosProjetos/list', ServicosProjetos.index);
+routes.put('/ServicosProjetos/update', ServicosProjetos.update);
+routes.post('/ServicosProjetos/delete', ServicosProjetos.destroy);
 
 //WhatsApp
 routes.post('/WhatsApp/register', WhatsApp.store);
@@ -30,24 +31,27 @@ routes.post('/WhatsApp/update', WhatsApp.update);
 
 //Logo
 routes.post('/Logo/register', upload.single('thumbnail'), Logo.store);
-routes.post('/Logo/update', upload.single('thumbnail'), Logo.update);
-routes.post('/Logo/index', Logo.index);
-routes.delete('/Logo/delete', Logo.destroy);
+routes.put('/Logo/update', upload.single('thumbnail'), Logo.update);
+routes.get('/Logo/index/:tipo', upload.single('thumbnail'),Logo.index);
+//routes.delete('/Logo/delete',upload.single('thumbnail'), Logo.destroy);
 
 //FotoGestão
 routes.post('/Gestao/register', upload.single('thumbnail'), Gestao.store);
-routes.post('/Gestao/update', upload.single('thumbnail'), Gestao.update);
-routes.post('/Gestao/index', Gestao.index);
-routes.delete('Gestao/delete', Gestao.destroy);
+routes.put('/Gestao/update', upload.single('thumbnail'), Gestao.update);
+routes.get('/Gestao/index', Gestao.index);
 
 //Postagem
-routes.post('/Postagem/create', upload.single('thumbnail'), Postagem.store);
-routes.post('/Postagem/list', Postagem.index);
-routes.post('/Postagem/update', upload.single('thumbnail'), Postagem.update);
-routes.delete('/Postagem/delete', Postagem.destroy);
+routes.post('/Postagem/create', upload.array('thumbnail'), Postagem.store);
+routes.get('/Postagem/list/:pag/:categoria', Postagem.index);
+routes.put('/Postagem/update', upload.array('thumbnail'), Postagem.update);
+routes.get('/Postagem/all', Postagem.listAll);
+routes.delete('/Postagem/delete/:_id', Postagem.delete);
 
 //Contato
 routes.post('/Email/send', Contato.send);
+
+//Imagem
+routes.get('/Image/:filename', Imagens.getImage);
 
 
 module.exports = routes;
