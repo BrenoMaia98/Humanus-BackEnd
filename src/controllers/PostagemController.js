@@ -10,6 +10,7 @@ module.exports = {
         var numeroPostBanco = 1,
             numeroPostCategoria = 1,
             filenames = [];
+            console.log(req.files)
         req.files.forEach(file => {
             filenames.push(file.filename)
         });
@@ -66,22 +67,26 @@ module.exports = {
     },
 
     async update(req, res) {
-        const { categoria, titulo, data, resumo, materiaCompleta, _id } = req.body;
+        const { categoria, titulo, data, resumo, materiaCompleta, _id, naoModificada } = req.body;
         var filenames = [];
         req.files.forEach(file => {
             filenames.push(file.filename)
         });
+        naoModificada.forEach(file => {
+            filenames.push(file)
+        });
         try {
-
             const postagem = await Postagem.findOne({ _id });
             postagem.thumbnail.forEach(async img => {
-                const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
-                await fs.unlink(pasta, function (error) {
-                    if (error) {
-                        throw error;
-                    }
-                });
-            })
+                if(!naoModificada.includes(img)){
+                    const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
+                    await fs.unlink(pasta, function (error) {
+                        if (error) {
+                            throw error;
+                        }
+                    });
+                }
+                })
             if (postagem) {
                 const update = await Postagem.updateOne(
                     { _id },
