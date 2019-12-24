@@ -10,7 +10,7 @@ module.exports = {
         var numeroPostBanco = 1,
             numeroPostCategoria = 1,
             filenames = [];
-            console.log(req.files)
+        console.log(req.files)
         req.files.forEach(file => {
             filenames.push(file.filename)
         });
@@ -67,18 +67,33 @@ module.exports = {
     },
 
     async update(req, res) {
-        const { categoria, titulo, data, resumo, materiaCompleta, _id, naoModificada } = req.body;
+        const { categoria, titulo, data, resumo, materiaCompleta, _id } = req.body;
+        var { naoModificada } = req.body;
         var filenames = [];
-        req.files.forEach(file => {
-            filenames.push(file.filename)
-        });
-        naoModificada.forEach(file => {
-            filenames.push(file)
-        });
         try {
+            if (req.files) {
+
+                req.files.forEach(file => {
+                    filenames.push(file.filename)
+                });
+            }
+            console.log("NMod : ",naoModificada)
+            console.log("NMod : ",typeof(naoModificada))
+            if (naoModificada !== undefined) {
+                if(typeof(naoModificada) !== "string"){
+
+                    naoModificada.forEach(file => {
+                        filenames.push(file)
+                    });
+                }else{
+                    filenames.push(naoModificada)
+                }
+            }else{
+                naoModificada = [];
+            }
             const postagem = await Postagem.findOne({ _id });
             postagem.thumbnail.forEach(async img => {
-                if(!naoModificada.includes(img)){
+                if (!naoModificada.includes(img)) {
                     const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
                     await fs.unlink(pasta, function (error) {
                         if (error) {
@@ -86,8 +101,10 @@ module.exports = {
                         }
                     });
                 }
-                })
+            })
             if (postagem) {
+                console.log("update")
+                console.log({ thumbnail: filenames })
                 const update = await Postagem.updateOne(
                     { _id },
                     { $set: { categoria, titulo, data, resumo, materiaCompleta, thumbnail: filenames } },
