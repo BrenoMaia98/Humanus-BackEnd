@@ -17,6 +17,9 @@ const upload = multer(uploadConfig);
 //Session
 routes.post('/Session/create', Session.store);
 routes.post('/Session/login', Session.show);
+routes.post('/Session', Session.index);
+routes.delete('/Session', Session.deleteAll);
+routes.put('/Session', Session.update);
 
 //ServicosProjetos
 routes.post('/ServicosProjetos/create', ServicosProjetos.store);
