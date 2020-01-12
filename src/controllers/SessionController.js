@@ -28,14 +28,15 @@ module.exports = {
             }
             else {
                 await jwt.verify(verificaUsuario.token, senha, function (err, decoded) {
-                    if (err) {
+                    if (err)
                         return res.json({ isError: true, message: "Usuario ou senha invalido" });
-                    }
+
                 });
                 return res.json({ isError: false, token: verificaUsuario.token });
             }
         } catch (e) {
             console.log("Catch Error: ", e);
+            return res.json({ isError: true, message: "Erro de conexão xcvxcvxcv" });
         }
     },
 
@@ -56,7 +57,7 @@ module.exports = {
             console.log(verificaUsuario)
             if (verificaUsuario) {
                 const updatedUser = await Session.updateOne({ usuario, senha });
-                return res.json({ updatedUser , message: "Usuario alterado com sucesso" });
+                return res.json({ updatedUser, message: "Usuario alterado com sucesso" });
             }
             else {
                 res.json({ isError: true, message: "Usuario ou senha invalido" });

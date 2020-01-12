@@ -10,7 +10,6 @@ module.exports = {
         var numeroPostBanco = 1,
             numeroPostCategoria = 1,
             filenames = [];
-        console.log(req.files)
         req.files.forEach(file => {
             filenames.push(file.filename)
         });
@@ -77,8 +76,6 @@ module.exports = {
                     filenames.push(file.filename)
                 });
             }
-            console.log("NMod : ",naoModificada)
-            console.log("NMod : ",typeof(naoModificada))
             if (naoModificada !== undefined) {
                 if(typeof(naoModificada) !== "string"){
 
@@ -103,8 +100,6 @@ module.exports = {
                 }
             })
             if (postagem) {
-                console.log("update")
-                console.log({ thumbnail: filenames })
                 const update = await Postagem.updateOne(
                     { _id },
                     { $set: { categoria, titulo, data, resumo, materiaCompleta, thumbnail: filenames } },
@@ -115,7 +110,7 @@ module.exports = {
                 res.json({ isError: true, message: "Não foi encontrado o registro" });
             }
         } catch (e) {
-            console.log(e)
+            res.json({ isError: true, message: e });
         }
     },
 
@@ -126,16 +121,21 @@ module.exports = {
 
             postagem.thumbnail.forEach(async img => {
                 const pasta = path.resolve(__dirname, '..', '..', 'uploads', `${img}`);
-                await fs.unlink(pasta, function (error) {
+                
+                try{
+                    await fs.unlink(pasta, function (error) {
                     if (error) {
-                        throw error;
+                        return res.json({ isError: true, message: error });
                     }
                 });
+            }catch(e){
+                return res.json({ isError: true, message: e });
+            }
             })
             await Postagem.findOneAndDelete({ _id });
-            res.json({ isError: false, message: "Postagem deletada com sucesso" });
+            return res.json({ isError: false, message: "Postagem deletada com sucesso" });
         } else {
-            res.json({ isError: true, message: "Não existe tal postagem para ser deletada!" });
+            return res.json({ isError: true, message: "Não existe tal postagem para ser deletada!" });
         }
     },
 

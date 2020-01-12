@@ -8,7 +8,7 @@ const WhatsApp = require('./controllers/WhatsAppControler');
 const Logo = require('./controllers/LogoController');
 const Gestao = require('./controllers/GestaoController');
 const Postagem = require('./controllers/PostagemController');
-const Contato = require('./controllers/ContatoController');
+const Email = require('./controllers/EmailController');
 const Imagens = require('./controllers/Imagens');
 
 const routes = express.Router();
@@ -51,7 +51,9 @@ routes.get('/Postagem/all', Postagem.listAll);
 routes.delete('/Postagem/delete/:_id', Postagem.delete);
 
 //Contato
-routes.post('/Email/send', Contato.send);
+routes.post('/Email/register', Email.store);
+routes.get('/Email/show', Email.show);
+routes.put('/Email/update', Email.update);
 
 //Imagem
 routes.get('/Image/:filename', Imagens.getImage);
