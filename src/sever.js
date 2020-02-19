@@ -23,15 +23,16 @@ app.use(function (req, res, next) {
     next();
 });
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://Vini:WpjLjk19IHcQCnDk@cluster0-shard-00-00-dixbc.mongodb.net:27017,cluster0-shard-00-01-dixbc.mongodb.net:27017,cluster0-shard-00-02-dixbc.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority', {
+mongoose.connect('', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-})
-    .then(res => console.log("Connected to DB"))
-    .catch(err => console.log(err))
+}).then(
+    () => { console.log("Conectado com sucesso ao banco de dados.") },
+    err => { console.log("Erro ao conectar-se ao banco") }
+);
 
 app.use(express.json());
 
 
 app.use(routes);
-app.listen(3333);
+app.listen(5624, ()=>{console.log("Servidor iniciado em 5624.")});
